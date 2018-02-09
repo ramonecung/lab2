@@ -68,6 +68,7 @@ Using your uncurry function, define uncurried plus and times
 functions.
 ......................................................................*)
 
+(* not working yet *)
 let plus (arg_one, arg_two) =
   uncurry ( + ) arg_one arg_two
   ;;
@@ -88,8 +89,9 @@ Now reimplement prods using map and your uncurried times function. Why
 do you need the uncurried times function?
 ......................................................................*)
 
-let prods =
-  fun _ -> failwith "prods not implemented" ;; 
+let prods (lst : (int * int) list) : int list =
+  List.map ( times ) lst 
+   ;; 
 
 (*======================================================================
 Part 2: Option types
