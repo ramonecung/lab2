@@ -46,9 +46,14 @@ To think about before you start coding:
 Now implement the two functions curry and uncurry.
 ......................................................................*)
 
-let curry = fun _ -> failwith "curry not implemented" ;;
+let curry f (arg_one, arg_two) = 
+  match arg_one, arg_two with
+  | (one, two) -> f one two
+   ;;
      
-let uncurry = fun _ -> failwith "uncurry not implemented" ;;
+let uncurry f arg_one arg_two = 
+  f(arg_one, arg_two)
+  ;;
 
 (*......................................................................
 Exercise 2: OCaml's built in binary operators, like ( + ) and ( * ) are
