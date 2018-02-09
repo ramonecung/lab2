@@ -68,11 +68,13 @@ Using your uncurry function, define uncurried plus and times
 functions.
 ......................................................................*)
 
-let plus =
-  fun _ -> failwith "plus not implemented"
+let plus (arg_one, arg_two) =
+  uncurry ( + ) arg_one arg_two
+  ;;
      
-let times =
-  fun _ -> failwith "times not implemented" ;;
+let times arg_one arg_two =
+  uncurry ( * ) arg_one arg_two
+  ;;
   
 (*......................................................................
 Exercise 3: Recall the prods function from Lab 1:
