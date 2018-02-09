@@ -1,7 +1,9 @@
 (* 
+ 
                               CS51 Lab 2
                     Polymorphism and record types
                              Spring 2018
+ 
  *)
 
 
