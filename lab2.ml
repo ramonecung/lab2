@@ -310,7 +310,7 @@ let sum : int list -> int =
 let dotprod (a : int list) (b : int list) : int option =
    maybe ()  
   ;; 
-*)
+
 (*
 
 let dotprod (a : int list) (b : int list) : int option =
@@ -409,3 +409,4 @@ For example:
 
 let verify (enrollments : enrollment list) : bool =
   failwith "verify not implemented" ;;
+*)
