@@ -306,10 +306,11 @@ Lab 1.
 let sum : int list -> int =
   List.fold_left (+) 0 ;;
 
+(*
 let dotprod (a : int list) (b : int list) : int option =
-  (* maybe () *) 
+   maybe ()  
   ;; 
-
+*)
 (*
 
 let dotprod (a : int list) (b : int list) : int option =
