@@ -251,7 +251,8 @@ Do so below in a new definition of zip.
 let zip (x : 'a list) (y : 'a list) : ('a * 'a) list option =
   let rec inner_zip listx listy acc =
     match listx, listy with
-    | firstx :: restx, firsty :: resty -> inner_zip restx resty (acc @ [(firstx, firsty)])
+    | firstx :: restx, firsty :: resty -> inner_zip restx resty 
+        (acc @ [(firstx, firsty)])
     | [], [] -> Some acc
     | _ -> None
   in
