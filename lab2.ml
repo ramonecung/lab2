@@ -193,8 +193,8 @@ let min_option_2 =
   calc_option min
   ;;
      
-let max_option_2 =
-  calc_option max
+let max_option_2 (x : 'a option) (y : 'a option) : 'a option =
+  calc_option max x y
   ;;
 
 (*......................................................................
@@ -329,7 +329,7 @@ lines. There's likely to be a subtle issue here, since the maybe
 function always passes along the None.
 ......................................................................*)
 
-let rec max_list_2 (lst : int list) : int option =
+let max_list_2 (lst : int list) : int option =
   match lst with
   | [] -> None
   | [single] -> Some single
