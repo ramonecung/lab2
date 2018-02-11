@@ -236,7 +236,7 @@ let rec zip_exn (x : 'a list) (y : 'a list) : ('a * 'a) list =
   match x, y with
   | [], [] -> []
   | xhd :: xtl, yhd :: ytl -> (xhd, yhd) :: (zip_exn xtl ytl) 
-  | _ -> raise (Failure "Lists must be of same length")
+  | _ -> raise (Failure "zip_exn: Lists must be of same length")
   ;;
 
 (*......................................................................
@@ -254,7 +254,6 @@ let zip (x : 'a list) (y : 'a list) : ('a * 'a) list option =
     | firstx :: restx, firsty :: resty -> inner_zip restx resty (acc @ [(firstx, firsty)])
     | [], [] -> Some acc
     | _ -> None
-
   in
   inner_zip x y []
   ;;
@@ -293,7 +292,7 @@ let maybe (f : 'a -> 'b) (x : 'a option) : 'b option =
   match x with
   | None -> None
   | Some x -> Some (f x) 
-  ;; 
+  ;;
 
 (*......................................................................
 Exercise 13: Now reimplement dotprod to use the maybe function. (The
@@ -306,25 +305,23 @@ Lab 1.
 let sum : int list -> int =
   List.fold_left (+) 0 ;;
 
-(*
-let dotprod (a : int list) (b : int list) : int option =
-   maybe ()  
-  ;; 
-
-(*
 
 let dotprod (a : int list) (b : int list) : int option =
-  let pairsopt = zip a b in
-  match pairsopt with
-  | None -> None
-  | Some pairs -> Some (sum (prods pairs)) ;;
+  maybe (fun tuple -> sum (prods tuple)) (zip a b)
+  ;;
 
-......................................................................
+(*......................................................................
 Exercise 14: Reimplement zip along the same lines, in zip_2 below. 
 ......................................................................*)
 
 let rec zip_2 (x : int list) (y : int list) : ((int * int) list) option =
-  failwith "zip_2 not implemented" ;;
+  match (x, y) with
+  | ([], []) -> Some []
+  | (firstx :: restofx, firsty :: restofy) ->
+     maybe (fun fulllist -> ((firstx, firsty) :: fulllist)) 
+     (zip_2 restofx restofy)
+  | _ -> None 
+  ;;
 
 (*......................................................................
 Exercise 15: For the energetic, reimplement max_list along the same
@@ -333,7 +330,12 @@ function always passes along the None.
 ......................................................................*)
 
 let rec max_list_2 (lst : int list) : int option =
-  failwith "max_list not implemented" ;; 
+  match lst with
+  | [] -> None
+  | [single] -> Some single
+  | head :: tail ->
+     maybe (fun max_tail -> if head > max_tail then head else max_tail) 
+     (max_list tail) ;;
 
 (*======================================================================
 Part 5: Record types
@@ -380,9 +382,9 @@ For example:
 
 let transcript (enrollments : enrollment list)
                (student : int)
-             : enrollment list =
-  failwith "transcript not implemented" ;;
-  
+               : enrollment list =
+  List.filter (fun { id; _ } -> id = student) enrollments 
+  ;;  
 (*......................................................................
 Exercise 17: Define a function called ids that takes an enrollment
 list and returns a list of all the id numbers in that enrollment list,
@@ -395,7 +397,9 @@ For example:
 ......................................................................*)
 
 let ids (enrollments: enrollment list) : int list =
-  failwith "ids not implemented" ;;
+  List.sort_uniq (compare)
+    (List.map (fun student -> student.id) enrollments) 
+  ;;
   
 (*......................................................................
 Exercise 18: Define a function called verify that determines whether all
@@ -407,6 +411,14 @@ For example:
 - : bool = false
 ......................................................................*)
 
+let names (enrollments: enrollment list) : string list =
+  List.sort_uniq (compare)
+                 (List.map (fun { name; _ } -> name) enrollments)
+  ;;
+
 let verify (enrollments : enrollment list) : bool =
-  failwith "verify not implemented" ;;
-*)
+  List.for_all (fun l -> (List.length l) = 1)
+                (List.map
+                  (fun student -> names (transcript enrollments student))
+                  (ids enrollments)) 
+  ;;
